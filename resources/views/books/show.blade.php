@@ -3,10 +3,13 @@
 @section('content')
 	<div class="row">
 		<div class="col-md-9">
-			
+			<div>
+				<img src="/storage/cover_image/{{ $book->cover_image }}">
+			</div>
+				<hr>
 				<h1> Title: {{ $book->title}}</h1>
 				<h2>Author: {{ $book->author}}</h2>
-				<h2>Published on: {{ $book->publish_date}}</h2>
+			<h2>Published on: {{ $book->publish_date}}</h2>
 				<h2>Series: {{ $book->series_title}}</h2>
 				<h2>Series No. {{ $book->series_no}}</h2>
 				<br>

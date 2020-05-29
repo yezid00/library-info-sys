@@ -22,7 +22,11 @@ class CreateBooksTable extends Migration
             $table->date('publish_date');
             $table->string('file');
             $table->string('series_title');
+<<<<<<< HEAD
             $table->integer('series_no');
+=======
+            $table->integer('series_no.');
+>>>>>>> changes
             $table->timestamps();
         });
     }
