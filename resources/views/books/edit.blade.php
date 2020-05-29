@@ -37,6 +37,10 @@
 						{{form::file('file',['class'=>'form-control-file'])}}
 					</div>
 					<div class="form-group">
+						{{ form::label('cover_image','Add Cover Image') }}
+						{{ form::file('cover_image',['class'=>'form-control']) }}
+					</div>
+					<div class="form-group">
 						<div class="row">
 							<div class="col">
 								{{form::label('series_title','Series Title')}}
