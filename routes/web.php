@@ -14,7 +14,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/','PagesController@index')->name('index');
-Route::post('search','SearchController@postSearch');
+
+Route::get('search','SearchController@getSearch')->name('search');
+Route::post('search','SearchController@postSearch')->name('search');
+Route::get('results','SearchController@results')->name('results');
 
 Route::resource('books','BooksController');
 

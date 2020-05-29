@@ -4,7 +4,7 @@
 	<div class="row">
 		<div class="col-md-9">
 			<div>
-				<img src="/storage/cover_image/{{ $book->cover_image }}">
+				<img style="width: 50%;" src="/storage/cover_image/{{ $book->cover_image }}">
 			</div>
 				<hr>
 				<h1> Title: {{ $book->title}}</h1>

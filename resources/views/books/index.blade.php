@@ -27,19 +27,7 @@
 			<h1>No book in store</h1>
 	@endif
 		</div>
-		<div class="col-md-3">
-			<h2>Search</h2>
-			{!!Form::open(['action'=>'SearchController@postSearch','method'=>'POST'])!!}
-				<div class="form-group">
-					<div class="row">
-						<div class="col">
-							{{form::text('search',null,['class'=>'form-control','placeholder'=>'search'])}}
-						</div>
-					</div>
-				</div>
-				{{form::submit('Search',['class'=>'btn btn-primary'])}}
-			{!! Form::close()!!}
-		</div>
+		
 	</div>
 	
 
