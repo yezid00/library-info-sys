@@ -38,7 +38,7 @@ class BooksController extends Controller
     {
         $this->validate($request,array(
             'title'=>'required|min:10|max:255',
-            'description'=>'required|min:10|max:255',
+            'description'=>'required|min:10|max:1000',
             'author'=>'required|min:10|max:255',
             'pages'=>'required|numeric|min:1|',
             'publish_date'=>'required|date_format:Y-m-d',
@@ -121,7 +121,7 @@ class BooksController extends Controller
         $book = Book::find($id);
         $this->validate($request, [
             'title'=>'required|min:10|max:255',
-            'description'=>'required|min:10|max:255',
+            'description'=>'required|min:10|max:1000',
             'author'=>'required|min:10|max:255',
             'pages'=>'required|numeric|min:1|',
             'publish_date'=>'required|date_format:Y-m-d',
