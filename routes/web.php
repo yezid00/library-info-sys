@@ -13,10 +13,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/','PagesController@index');
+Route::get('/','PagesController@index')->name('index');
 Route::post('search','SearchController@postSearch');
 
-Route::resource('pages','BooksController');
+Route::resource('books','BooksController');
 
 
 Auth::routes();

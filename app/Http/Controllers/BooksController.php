@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\Book;
+use Storage;
 class BooksController extends Controller
 {
     /**
@@ -13,7 +14,8 @@ class BooksController extends Controller
      */
     public function index()
     {
-        //
+        $books = Book::orderBy('created_at','desc')->paginate(5);
+        return view('books.index')->withBooks($books);
     }
 
     /**
@@ -23,7 +25,7 @@ class BooksController extends Controller
      */
     public function create()
     {
-        //
+        return view('books.create');
     }
 
     /**
@@ -34,7 +36,42 @@ class BooksController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request,array(
+            'title'=>'required|min:10|max:255',
+            'description'=>'required|min:10|max:255',
+            'author'=>'required|min:10|max:255',
+            'pages'=>'required|numeric|min:1|',
+            'publish_date'=>'required|date_format:Y-m-d',
+            'file'=>'required|file|mimetypes:application/pdf|max:10000',
+            'series_title'=>'nullable|',
+            'series_no'=>'numeric|nullable'
+
+        ));
+        if($request->hasFile('file')){
+            $filenameWithExtension = $request->file('file')->getClientOriginalName();
+            $filename = pathinfo($filenameWithExtension,PATHINFO_FILENAME);
+            $extension = $request->file('file')->getClientOriginalExtension();
+
+            $filenameToStore = $filename.'_'.time().'.'.$extension;
+
+            $path = $request->file('file')->storeAs('public/uploads',$filenameToStore);
+        }
+
+        $book = new Book;
+
+        $book->title = $request->title;
+        $book->description = $request->description;
+        $book->author = $request->author;
+        $book->pages = $request->pages;
+        $book->publish_date = $request->publish_date;
+        $book->file = $filenameToStore;
+        $book->series_title = $request->series_title;
+        $book->series_no = $request->series_no;
+
+        $book->save();
+
+        // return redirect()->route('books.index')->with('success','new book added to the library');
+        return redirect()->route('books.index')->with('success',$book->title.'added to the catalog');
     }
 
     /**
@@ -45,7 +82,8 @@ class BooksController extends Controller
      */
     public function show($id)
     {
-        //
+        $book = Book::find($id);
+        return view('books.show')->withBook($book);
     }
 
     /**
@@ -56,7 +94,8 @@ class BooksController extends Controller
      */
     public function edit($id)
     {
-        //
+        $book = Book::find($id);
+        return view('books.edit')->withBook($book);
     }
 
     /**
@@ -68,7 +107,38 @@ class BooksController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $book = Book::find($id);
+        $this->validate($request, [
+            'title'=>'required|min:10|max:255',
+            'description'=>'required|min:10|max:255',
+            'author'=>'required|min:10|max:255',
+            'pages'=>'required|numeric|min:1|',
+            'publish_date'=>'required|date_format:Y-m-d',
+            'file'=>'required|file|mimetypes:application/pdf|max:10000',
+            'series_title'=>'nullable|',
+            'series_no'=>'numeric|nullable'
+        ]);
+
+        if($request->hasFile('file')){
+            $filenameWithExtension = $request->file('file')->getClientOriginalName();
+            $filename = pathinfo($filenameWithExtension,PATHINFO_FILENAME);
+            $extension = $request->file('file')->getClientOriginalExtension();
+            $filenameToStore = $filename.'_'.time().'.'.$extension;
+
+            $path = $request->file('file')->storeAs('public/uploads',$filenameToStore);
+        }
+
+        $book->title = $request->title;
+        $book->description = $request->description;
+        $book->author = $request->author;
+        $book->pages = $request->pages;
+        $book->publish_date = $request->publish_date;
+        $book->file = $filenameToStore;
+        $book->series_title = $request->series_title;
+        $book->series_no = $request->series_no;
+
+        $book->save();
+        return redirect()->route('books.show',$book->id)->with('success',$book->title.' has been Updated');
     }
 
     /**
@@ -79,6 +149,10 @@ class BooksController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $book = Book::find($id);
+        Storage::delete('public/uploads/'.$book->file);
+        $book->delete();
+        return redirect()->route('books.index')->with('success',$book->title.' has been Deleted');
+
     }
 }
